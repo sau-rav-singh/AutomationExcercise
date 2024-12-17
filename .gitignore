@@ -1,0 +1,56 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+/.idea/.gitignore
+/.idea/encodings.xml
+/.idea/misc.xml
+/backupReports/my_report2024_12_17_20_20_09.zip
+/backupReports/my_report2024_12_17_20_20_27.zip
+/backupReports/my_report2024_12_17_21_04_52.zip
+/logs/test.log
+/reports/TestReport2024_12_17_21_16_05.html
+/reports/TestReport2024_12_17_21_30_35.html
+/reports/TestReport2024_12_17_21_33_06.html
+/reports/TestReport2024_12_17_21_34_39.html
+/reports/TestReport2024_12_17_21_54_01.html
+/reports/TestReport2024_12_17_22_01_36.html
+/reports/TestReport2024_12_17_22_03_01.html
+/reports/TestReport2024_12_17_22_03_37.html
+/reports/TestReport2024_12_17_22_08_09.html
+/screenshots/after_SignUp/Login Button_1734450372877.png
+/screenshots/before_SignUp/Login Button_1734450371961.png
