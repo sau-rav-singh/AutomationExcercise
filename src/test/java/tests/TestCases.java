@@ -14,8 +14,4 @@ public class TestCases extends TestBase {
         CustomAssertions.assertTrue(pageObjectManager.getloginSignupPage().isNewUserSignUpDisplayed(), "Verify New User SignUp is Displayed");
         pageObjectManager.getloginSignupPage().fillSignup("lorem", "test@xyz.com");
     }
-
-    public static void main(String[] args) {
-
-    }
 }

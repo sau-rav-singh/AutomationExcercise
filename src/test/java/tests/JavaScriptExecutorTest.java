@@ -1,20 +1,29 @@
 package tests;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 
 public class JavaScriptExecutorTest {
-    WebDriver driver;
+    static WebDriver driver;
     JavascriptExecutor js;
+
+    private static void takeScreenshot() {
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(screenshot, new File("src/test/resources/ss.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @BeforeTest
     public void setup() {
@@ -23,6 +32,16 @@ public class JavaScriptExecutorTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get("https://letcode.in/test");
         js = (JavascriptExecutor) driver;
+    }
+
+    @Test
+    public void inputTest() throws InterruptedException {
+        WebElement input = driver.findElement(By.xpath("//header[normalize-space()='Input']/parent::div/footer/a"));
+        js.executeScript("arguments[0].click();", input);
+        WebElement fullName = driver.findElement(By.id("fullName"));
+        js.executeScript("document.getElementById('fullName').value='saurav';");
+        String text = (String) js.executeScript("return arguments[0].value;", fullName);
+        Assert.assertEquals(text, "saurav");
     }
 
     @Test
@@ -35,18 +54,16 @@ public class JavaScriptExecutorTest {
         Assert.assertTrue(firstYes.isSelected());
         js.executeScript("document.querySelector('[id=\"no\"]').click();");
         Assert.assertFalse(firstYes.isSelected());
+        takeScreenshot();
     }
 
-    @Test
-    public void inputTest() {
-        WebElement input = driver.findElement(By.xpath("//header[normalize-space()='Input']/parent::div/footer/a"));
-        js.executeScript("arguments[0].click();", input);
-        WebElement fullName = driver.findElement(By.id("fullName"));
-        js.executeScript("document.getElementById('fullName').value='saurav';");
-        String text = (String) js.executeScript("return arguments[0].value;", fullName);
-        Assert.assertEquals(text, "saurav");
+    public WebElement sectionElement(String name) {
+        return driver.findElement(By.xpath("//header[normalize-space()='" + name + "']/parent::div/footer/a"));
     }
 
+    public WebElement elementById(String id){
+        return  driver.findElement(By.id(id));
+    }
     @AfterTest
     public void tearDown() {
         driver.quit();
