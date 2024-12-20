@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
 public class JavaScriptExecutorTest {
     static WebDriver driver;
@@ -63,6 +64,12 @@ public class JavaScriptExecutorTest {
 
     public WebElement elementById(String id){
         return  driver.findElement(By.id(id));
+    }
+    public WebElement elementByxpath(String id){
+        return  driver.findElement(By.xpath(id));
+    }
+    public List<WebElement> elementsByxpath(String xpath){
+        return  driver.findElements(By.xpath(xpath));
     }
     @AfterTest
     public void tearDown() {
