@@ -95,12 +95,12 @@ public class LetCodeTest extends JavaScriptExecutorTest {
             }
             nextButton.click();
             try {
-                Thread.sleep(2000);
-                table = driver.findElement(By.id("advancedtable"));  // Refetch table element after navigation
+                Thread.sleep(500);
+                table = driver.findElement(By.id("advancedtable"));
                 nextButton = driver.findElement(By.xpath("//a[text()='Next']"));
                 String text = elementByxpath("//div[@id='advancedtable_info']").getText();
                 String[] split = text.split("of");
-                String totalData = split[1].trim().split(" ")[0].trim();
+                String totalData = split[1].trim().split("\\s+")[0].trim();
                 flag = split[0].contains(totalData);
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
