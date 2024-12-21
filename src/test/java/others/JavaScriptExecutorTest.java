@@ -1,4 +1,4 @@
-package tests;
+package others;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;

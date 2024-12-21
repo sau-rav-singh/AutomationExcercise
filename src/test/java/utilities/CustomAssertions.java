@@ -14,7 +14,7 @@ public class CustomAssertions {
             ExtentReportManager.logPassDetails("Assertion Passed: " + message);
         } catch (AssertionError e) {
             ExtentReportManager.logFailureDetails("Assertion Failed: " + message);
-            CustomElement.embedScreenshot(getDriver(), getExtentTest().get());
+            ExtentActions.embedScreenshot(getDriver(), getExtentTest().get());
             throw e;
         }
     }

@@ -1,8 +1,12 @@
 package tests;
 
 import com.github.javafaker.Faker;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import pages.HomePage;
+import pages.LoginSignupPage;
+import pages.SignUpPage;
 import utilities.CustomAssertions;
 import utilities.GenericUtilities;
 import utilities.TestBase;
@@ -10,13 +14,38 @@ import utilities.TestBase;
 @Listeners(listeners.ExtentReportConfigListener.class)
 public class TestCases extends TestBase {
 
+    protected SignUpPage signUpPage;
+    protected HomePage homePage;
+    protected LoginSignupPage loginSignupPage;
     Faker faker = GenericUtilities.getFakerObject();
 
-    @Test
+    public void initializePages() {
+        signUpPage = pageObjectManager.getSignUpPage();
+        homePage = pageObjectManager.getHomePage();
+        loginSignupPage = pageObjectManager.getloginSignupPage();
+    }
+
+    @BeforeTest
+    public void setUp() {
+        initializePages();
+    }
+
+    @Test(description = "This test verifies a successful user signup flow with valid data")
     public void TC_01() {
-        CustomAssertions.assertTrue(pageObjectManager.getHomePage().isHomePageLoaded(), "Verify home page is loaded");
-        pageObjectManager.getHomePage().signupLoginClick();
-        CustomAssertions.assertTrue(pageObjectManager.getloginSignupPage().isNewUserSignUpDisplayed(), "Verify New User SignUp is Displayed");
-        pageObjectManager.getloginSignupPage().fillSignup(faker.name().fullName(), faker.internet().emailAddress());
+        CustomAssertions.assertTrue(homePage.isHomePageLoaded(), "Verify home page is loaded");
+        homePage.signupLoginClick();
+        CustomAssertions.assertTrue(loginSignupPage.isNewUserSignUpDisplayed(), "Verify New User SignUp is Displayed");
+        loginSignupPage.fillSignup(faker.name().fullName(), faker.internet().emailAddress());
+        CustomAssertions.assertTrue(signUpPage.isFormHeaderDisplayed(), "Sign Up Page Header");
+        signUpPage.selectMr();
+        signUpPage.enterPassword("mech1234");
+        signUpPage.enterFirstName(faker.name().firstName());
+        signUpPage.enterAddress(faker.address().fullAddress());
+        signUpPage.enterCity(faker.address().city());
+        signUpPage.enterState(faker.address().state());
+        signUpPage.enterLastName(faker.address().lastName());
+        signUpPage.enterZipcode(faker.address().zipCode());
+        signUpPage.enterMobileNumber(faker.phoneNumber().toString());
+        signUpPage.clickCreateAccount();
     }
 }

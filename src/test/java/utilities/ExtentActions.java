@@ -15,10 +15,10 @@ import java.util.Base64;
 import static listeners.ExtentReportConfigListener.getExtentTest;
 import static utilities.DriverManager.getDriver;
 
-public class CustomElement extends TestBase {
+public class ExtentActions extends TestBase {
     private final WebElement element;
 
-    public CustomElement(WebElement element) {
+    public ExtentActions(WebElement element) {
         this.element = element;
     }
 

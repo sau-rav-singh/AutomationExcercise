@@ -6,6 +6,7 @@ public class PageObjectManager {
     private final WebDriver driver;
     private HomePage homePage;
     private LoginSignupPage loginSignupPage;
+    private SignUpPage signUpPage;
 
     public PageObjectManager(WebDriver driver) {
         this.driver = driver;
@@ -16,6 +17,10 @@ public class PageObjectManager {
     }
     public LoginSignupPage getloginSignupPage() {
         return loginSignupPage == null ? loginSignupPage = new LoginSignupPage(driver) : loginSignupPage;
+    }
+
+    public SignUpPage getSignUpPage() {
+        return signUpPage == null ? signUpPage = new SignUpPage(driver) : signUpPage;
     }
 
 }

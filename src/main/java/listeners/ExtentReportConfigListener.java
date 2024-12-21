@@ -21,7 +21,6 @@ public class ExtentReportConfigListener implements ITestListener {
 
 	@Override
 	public void onStart(ITestContext context) {
-		// Ensure the ExtentReports instance is initialized
 		extentReports = ExtentReportManager.getInstance();
 	}
 
@@ -34,7 +33,8 @@ public class ExtentReportConfigListener implements ITestListener {
 
 	@Override
 	public void onTestStart(ITestResult result) {
-		ExtentTest test = extentReports.createTest(result.getTestClass().getName() + " - " + result.getMethod().getMethodName());
+		String description = result.getMethod().getDescription();
+		ExtentTest test = extentReports.createTest(result.getTestClass().getName() + " - " + result.getMethod().getMethodName()).info(description);
 		extentTest.set(test);
 	}
 
