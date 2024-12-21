@@ -1,7 +1,6 @@
 package reporting;
 
 import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.markuputils.CodeLanguage;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
@@ -9,8 +8,6 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import io.restassured.http.Header;
 import listeners.ExtentReportConfigListener;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +17,16 @@ import java.util.List;
 public class ExtentReportManager {
 
     public static ExtentReports extentReports;
+    private ExtentReportManager() {};
+
+    public static synchronized ExtentReports getInstance() {
+        if (extentReports == null) {
+            String fileName = getReportNameWithTimeStamp();
+            String fullReportPath = System.getProperty("user.dir") + "\\reports\\" + fileName;
+            extentReports = createInstance(fullReportPath, "Test API Automation Report", "Test ExecutionReport");
+        }
+        return extentReports;
+    }
 
     public static ExtentReports createInstance(String fileName, String reportName, String documentTitle) {
         ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter(fileName);

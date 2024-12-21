@@ -1,10 +1,15 @@
 package utilities;
 
+import lombok.Getter;
 import org.apache.log4j.Logger;
 
 public class LoggerHelper {
 
+    @Getter
     private static final Logger logger = Logger.getLogger(LoggerHelper.class);
+
+    private LoggerHelper() {
+    }
 
     public static void info(String message) {
         logger.info(message);

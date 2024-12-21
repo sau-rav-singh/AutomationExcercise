@@ -11,8 +11,9 @@ import java.util.Arrays;
 
 public class ExtentReportConfigListener implements ITestListener {
 
-	private static ExtentReports extentReports;
-	public static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
+	private static ExtentReports extentReports = ExtentReportManager.getInstance();
+	public static final ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
+
 
 	public void onStart(ITestContext context) {
 		String fileName = ExtentReportManager.getReportNameWithTimeStamp();
