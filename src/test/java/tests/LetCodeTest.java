@@ -12,9 +12,8 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LetCodeTest extends JavaScriptExecutorTest {
 
@@ -49,6 +48,19 @@ public class LetCodeTest extends JavaScriptExecutorTest {
     }
 
     @Test
+    public void windowsTest() {
+        sectionElement("Window").click();
+        elementById("multi").click();
+        Set<String> windowHandles = driver.getWindowHandles();
+        List<String> windowHandlesList = new ArrayList<>(windowHandles);
+        driver.switchTo().window(windowHandlesList.get(1));
+        Assert.assertEquals(driver.getTitle(), "LetCode with Koushik");
+        driver.close();
+        driver.switchTo().window(windowHandlesList.getFirst());
+        Assert.assertEquals(driver.getTitle(), "Window handling - LetCode");
+    }
+
+    @Test
     public void calenderTest() {
         sectionElement("Calendar").click();
         String month = driver.findElement(By.xpath("//div[@class='datepicker-nav-month']")).getText();
@@ -69,6 +81,72 @@ public class LetCodeTest extends JavaScriptExecutorTest {
         driver.findElement(By.xpath("(//*[@class='datetimepicker-dummy-wrapper'])[2]/input[1]")).click();
         driver.findElement(By.xpath("(//*[@class='date-item is-today'])[2]")).click();
         driver.findElement(By.xpath("//*[@class='date-item is-today is-active']/parent::div/following-sibling::div[3]/button")).click();
+    }
+
+    @Test
+    public void simpleTableTest1() {
+        sectionElement("Table").click();
+        List<WebElement> prices = elementsByxpath("//table[@id='shopping'] //td[2]");
+        int priceSum = 0;
+        for (int i = 0; i < prices.size() - 1; i++) {
+            priceSum += Integer.parseInt(prices.get(i).getText());
+        }
+        int total = Integer.parseInt(prices.getLast().getText());
+        Assert.assertEquals(priceSum, total);
+    }
+
+    @Test
+    public void optimizedSimpleTableTest2() {
+        sectionElement("Table").click();
+        String firstName = "Raj";
+        System.out.println("//table[@id='simpletable']//tr[td[2]='" + firstName + "']//td[4]/input");
+        WebElement targetCell = driver.findElement(By.xpath("//table[@id='simpletable']//tr[td[2]='" + firstName + "']//td[4]/input"));
+        targetCell.click();
+    }
+
+    @Test
+    public void SimpleTableTest3() {
+        sectionElement("Table").click();
+        WebElement caloriesHeader = driver.findElement(By.cssSelector("th[mat-sort-header='calories']"));
+        while (!Objects.equals(caloriesHeader.getDomAttribute("aria-sort"), "descending")) {
+            caloriesHeader.click();
+        }
+        List<WebElement> calorieElements = driver.findElements(By.xpath("//table[contains(@class,'mat-sort')]/tr/td[2]"));
+        List<String> extractedCalories = calorieElements.stream().map(WebElement::getText).collect(Collectors.toList());
+        List<String> expectedDescendingOrder = new ArrayList<>(extractedCalories);
+        expectedDescendingOrder.sort(Collections.reverseOrder());
+        Assert.assertEquals(extractedCalories, expectedDescendingOrder);
+    }
+
+    @Test
+    public void SliderTest() {
+        sectionElement("Slider").click();
+        WebElement slider = driver.findElement(By.cssSelector("input[type='range']"));
+        Actions actions = new Actions(driver);
+        actions.dragAndDropBy(slider, 30, 0).perform();
+    }
+
+    @Test
+    public void MultiSelectTest() {
+        sectionElement("Multi-Select").click();
+        List<WebElement> options = elementsByxpath("//*[@id='container']/div");
+        Actions action = new Actions(driver);
+        action.keyDown(Keys.CONTROL).perform();
+        options.forEach(ele -> {
+            ele.click();
+            Assert.assertTrue(ele.getDomAttribute("class").contains("ui-selected"));
+        });
+        action.keyUp(Keys.CONTROL).perform();
+    }
+
+    @Test
+    public void DropTest() {
+        sectionElement("Drop").click();
+        WebElement source = elementById("draggable");
+        WebElement target = elementById("droppable");
+        actions.dragAndDrop(source, target).perform();
+        actions.clickAndHold(source).moveToElement(target).perform();
+
     }
 
     @Test
@@ -111,6 +189,7 @@ public class LetCodeTest extends JavaScriptExecutorTest {
 
     @Test
     public void inputTest() {
+        driver.manage().window().setSize(new Dimension(1024, 768));
         sectionElement("Input").click();
         String fullName = "Sachin Tendulkar";
         WebElement name = elementById("fullName");

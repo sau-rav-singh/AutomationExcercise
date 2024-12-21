@@ -3,6 +3,7 @@ package tests;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -16,7 +17,7 @@ import java.util.List;
 public class JavaScriptExecutorTest {
     static WebDriver driver;
     JavascriptExecutor js;
-
+    Actions actions;
     private static void takeScreenshot() {
         File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         try {
@@ -33,6 +34,7 @@ public class JavaScriptExecutorTest {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.get("https://letcode.in/test");
         js = (JavascriptExecutor) driver;
+        actions=new Actions(driver);
     }
 
     @Test
@@ -73,6 +75,6 @@ public class JavaScriptExecutorTest {
     }
     @AfterTest
     public void tearDown() {
-        driver.quit();
+       driver.quit();
     }
 }
