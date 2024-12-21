@@ -1,4 +1,4 @@
-package service;
+package api.config.service;
 
 import io.restassured.response.Response;
 import pojo.LoginRequest;

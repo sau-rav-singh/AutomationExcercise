@@ -3,6 +3,9 @@ package utilities;
 import org.testng.Assert;
 import reporting.ExtentReportManager;
 
+import static listeners.ExtentReportConfigListener.getExtentTest;
+import static utilities.DriverManager.getDriver;
+
 public class CustomAssertions {
 
     public static void assertTrue(boolean condition, String message) {
@@ -11,6 +14,7 @@ public class CustomAssertions {
             ExtentReportManager.logPassDetails("Assertion Passed: " + message);
         } catch (AssertionError e) {
             ExtentReportManager.logFailureDetails("Assertion Failed: " + message);
+            CustomElement.embedScreenshot(getDriver(), getExtentTest().get());
             throw e;
         }
     }

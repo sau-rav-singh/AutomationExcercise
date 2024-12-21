@@ -1,6 +1,6 @@
-package service;
+package api.config.service;
 
-import config.ConfigManager;
+import api.config.ConfigManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;

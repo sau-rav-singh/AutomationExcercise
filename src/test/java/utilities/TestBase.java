@@ -1,31 +1,45 @@
 package utilities;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.testng.annotations.*;
 import pages.PageObjectManager;
+import reporting.ExtentReportManager;
 
 import java.time.Duration;
 
 public class TestBase {
-    public static WebDriver driver;
-    public JavascriptExecutor js;
     protected PageObjectManager pageObjectManager;
+    protected JavascriptExecutor js;
 
     @BeforeTest
     public void setup() {
-        driver = new ChromeDriver();
-        pageObjectManager = new PageObjectManager(driver);
+        DriverManager.setDriver(initializeDriver());
+        WebDriver driver = DriverManager.getDriver();
         driver.manage().window().maximize();
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.get("https://automationexercise.com/");
+        String url = ConfigManager.getProperty("app.url");
+        driver.get(url);
+        pageObjectManager = new PageObjectManager(driver);
         js = (JavascriptExecutor) driver;
+        ExtentReportManager.getInstance(); // Initialize reporting
     }
 
     @AfterTest
     public void tearDown() {
-        driver.quit();
+        DriverManager.quitDriver();
+    }
+
+    private WebDriver initializeDriver() {
+        String browser = ConfigManager.getProperty("browser").toLowerCase();
+        return switch (browser) {
+            case "chrome" -> new ChromeDriver();
+            case "firefox" -> new FirefoxDriver();
+            case "edge" -> new EdgeDriver();
+            default -> throw new IllegalArgumentException("Unsupported browser: " + browser);
+        };
     }
 }

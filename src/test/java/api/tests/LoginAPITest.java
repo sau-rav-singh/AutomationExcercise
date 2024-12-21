@@ -1,4 +1,4 @@
-package tests;
+package api.tests;
 
 import com.github.javafaker.Faker;
 import io.restassured.response.Response;
@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import pojo.LoginRequest;
 import pojo.LoginResponse;
 import pojo.SignUpRequest;
-import service.AuthService;
+import api.config.service.AuthService;
 
 public class LoginAPITest {
     private AuthService authService;

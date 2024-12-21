@@ -6,68 +6,80 @@ import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import io.restassured.http.Header;
 import listeners.ExtentReportConfigListener;
+import org.apache.http.Header;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
 public class ExtentReportManager {
 
-    public static ExtentReports extentReports;
-    private ExtentReportManager() {};
+    private static ExtentReports extentReports;
+
+    private ExtentReportManager() {
+    }
 
     public static synchronized ExtentReports getInstance() {
         if (extentReports == null) {
-            String fileName = getReportNameWithTimeStamp();
-            String fullReportPath = System.getProperty("user.dir") + "\\reports\\" + fileName;
-            extentReports = createInstance(fullReportPath, "Test API Automation Report", "Test ExecutionReport");
+            String reportPath = getReportPath();
+            extentReports = createInstance(reportPath, "Test API Automation Report", "Test Execution Report");
         }
         return extentReports;
     }
 
     public static ExtentReports createInstance(String fileName, String reportName, String documentTitle) {
-        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter(fileName);
-        extentSparkReporter.config().setReportName(reportName);
-        extentSparkReporter.config().setDocumentTitle(documentTitle);
-        extentSparkReporter.config().setTheme(Theme.STANDARD);
-        extentSparkReporter.config().setEncoding("utf-8");
-        extentReports = new ExtentReports();
-        extentReports.attachReporter(extentSparkReporter);
-        return extentReports;
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter(fileName);
+        sparkReporter.config().setReportName(reportName);
+        sparkReporter.config().setDocumentTitle(documentTitle);
+        sparkReporter.config().setTheme(Theme.STANDARD);
+        sparkReporter.config().setEncoding("utf-8");
+
+        ExtentReports reports = new ExtentReports();
+        reports.attachReporter(sparkReporter);
+        return reports;
     }
 
-    public static String getReportNameWithTimeStamp() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");
-        LocalDateTime localDateTime = LocalDateTime.now();
-        String formattedTime = dateTimeFormatter.format(localDateTime);
-        return "TestReport" + formattedTime + ".html";
+    public static String getReportPath() {
+        String directory = System.getProperty("user.dir") + File.separator + "reports" + File.separator + "TestRun_" + System.currentTimeMillis();
+        File reportDir = new File(directory);
+        if (!reportDir.exists()) {
+            reportDir.mkdirs();
+        }
+        return Paths.get(directory, "TestReport.html").toString();
     }
+
 
     public static void logPassDetails(String log) {
-        ExtentReportConfigListener.extentTest.get().pass(MarkupHelper.createLabel(log, ExtentColor.GREEN));
-    }
-    public static void logFailureDetails(String log) {
-        ExtentReportConfigListener.extentTest.get().fail(MarkupHelper.createLabel(log, ExtentColor.RED));
-    }
-    public static void logExceptionDetails(String log) {
-        ExtentReportConfigListener.extentTest.get().fail(log);
-    }
-    public static void logInfoDetails(String log) {
-        ExtentReportConfigListener.extentTest.get().info(MarkupHelper.createLabel(log, ExtentColor.GREY));
-    }
-    public static void logWarningDetails(String log) {
-        ExtentReportConfigListener.extentTest.get().warning(MarkupHelper.createLabel(log, ExtentColor.YELLOW));
-    }
-    public static void logJson(String json) {
-        ExtentReportConfigListener.extentTest.get().info(MarkupHelper.createCodeBlock(json, CodeLanguage.JSON));
-    }
-    public static void logHeaders(List<Header> headersList) {
-        String[][] arrayHeaders = headersList.stream().map(header -> new String[] {header.getName(), header.getValue()})
-                        .toArray(String[][] :: new);
-        ExtentReportConfigListener.extentTest.get().info(MarkupHelper.createTable(arrayHeaders));
+        ExtentReportConfigListener.getExtentTest().ifPresent(test -> test.pass(MarkupHelper.createLabel(log, ExtentColor.GREEN)));
     }
 
+    public static void logFailureDetails(String log) {
+        ExtentReportConfigListener.getExtentTest().ifPresent(test -> test.fail(MarkupHelper.createLabel(log, ExtentColor.RED)));
+    }
+
+    public static void logExceptionDetails(String log) {
+        ExtentReportConfigListener.getExtentTest().ifPresent(test -> test.fail(log));
+    }
+
+    public static void logInfoDetails(String log) {
+        ExtentReportConfigListener.getExtentTest().ifPresent(test -> test.info(MarkupHelper.createLabel(log, ExtentColor.GREY)));
+    }
+
+    public static void logWarningDetails(String log) {
+        ExtentReportConfigListener.getExtentTest().ifPresent(test -> test.warning(MarkupHelper.createLabel(log, ExtentColor.YELLOW)));
+    }
+
+    public static void logJson(String json) {
+        ExtentReportConfigListener.getExtentTest().ifPresent(test -> test.info(MarkupHelper.createCodeBlock(json, CodeLanguage.JSON)));
+    }
+
+    public static void logHeaders(List<Header> headersList) {
+        if (headersList != null && !headersList.isEmpty()) {
+            String[][] arrayHeaders = headersList.stream().map(header -> new String[]{header.getName(), header.getValue()}).toArray(String[][]::new);
+            ExtentReportConfigListener.getExtentTest().ifPresent(test -> test.info(MarkupHelper.createTable(arrayHeaders)));
+        }
+    }
 }

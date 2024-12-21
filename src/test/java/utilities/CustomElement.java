@@ -8,13 +8,12 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import reporting.ExtentReportManager;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 
-import static listeners.ExtentReportConfigListener.extentTest;
-
+import static listeners.ExtentReportConfigListener.getExtentTest;
+import static utilities.DriverManager.getDriver;
 
 public class CustomElement extends TestBase {
     private final WebElement element;
@@ -30,11 +29,11 @@ public class CustomElement extends TestBase {
 
     public void click(String elementName) {
         try {
-            ExtentTest clickStep = extentTest.get().createNode("Clicking on: " + elementName);
+            ExtentTest clickStep = getExtentTest().get().createNode("Clicking on: " + elementName);
             LoggerHelper.info("Clicking on: " + elementName);
             element.click();
             clickStep.pass("Clicked on: " + elementName);
-            embedScreenshot(driver, clickStep);
+            embedScreenshot(getDriver(), clickStep);
         } catch (Exception e) {
             ExtentReportManager.logFailureDetails("Failed to click on: " + elementName);
             throw e;

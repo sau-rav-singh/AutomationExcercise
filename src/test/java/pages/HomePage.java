@@ -8,7 +8,6 @@ import utilities.ElementWrapper;
 
 public class HomePage {
 
-
     @FindBy(css = ".product-image-wrapper")
     private WebElement firstProduct;
 
