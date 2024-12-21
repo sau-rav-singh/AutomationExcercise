@@ -8,6 +8,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import reporting.ExtentReportManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
@@ -27,25 +28,25 @@ public class ExtentActions extends TestBase {
         return Base64.getEncoder().encodeToString(org.apache.commons.io.FileUtils.readFileToByteArray(sourceFile));
     }
 
-    public void click(String elementName) {
+    public static void embedScreenshot(WebDriver driver) {
         try {
-            ExtentTest clickStep = getExtentTest().get().createNode("Clicking on: " + elementName);
-            LoggerHelper.info("Clicking on: " + elementName);
-            element.click();
-            clickStep.pass("Clicked on: " + elementName);
-            embedScreenshot(getDriver(), clickStep);
-        } catch (Exception e) {
-            ExtentReportManager.logFailureDetails("Failed to click on: " + elementName);
-            throw e;
+            String base64Image = getBase64Screenshot(driver);
+            getExtentTest().get().log(Status.INFO, "Screenshot", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Image).build());
+        } catch (IOException e) {
+            getExtentTest().get().log(Status.WARNING, "Failed to capture screenshot: " + e.getMessage());
         }
     }
 
-    public static void embedScreenshot(WebDriver driver, ExtentTest step) {
+    public void click(String elementName) {
         try {
-            String base64Image = getBase64Screenshot(driver);
-            step.log(Status.INFO, "Screenshot", MediaEntityBuilder.createScreenCaptureFromBase64String(base64Image).build());
-        } catch (IOException e) {
-            step.log(Status.WARNING, "Failed to capture screenshot: " + e.getMessage());
+            LoggerHelper.info("Clicking on: " + elementName);
+            ExtentReportManager.logPassDetails("Clicking on: " + elementName);
+            element.click();
+            embedScreenshot(getDriver());
+
+        } catch (Exception e) {
+            ExtentReportManager.logFailureDetails("Failed to click on: " + elementName);
+            throw e;
         }
     }
 

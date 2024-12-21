@@ -47,5 +47,11 @@ public class TestCases extends TestBase {
         signUpPage.enterZipcode(faker.address().zipCode());
         signUpPage.enterMobileNumber(faker.phoneNumber().toString());
         signUpPage.clickCreateAccount();
+        CustomAssertions.assertTrue(signUpPage.accountCreationConfirmationIsDisplayed(), "Account Creation Confirmation");
+        signUpPage.clickContinue();
+        CustomAssertions.assertTrue(homePage.isLoggedin(), "Logged In");
+        homePage.deleteAccountClick();
+        CustomAssertions.assertTrue(signUpPage.accountDeletedConfirmationIsDisplayed(), "Account Deleted");
+        signUpPage.clickContinue();
     }
 }

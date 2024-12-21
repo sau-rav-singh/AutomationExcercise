@@ -14,6 +14,12 @@ public class HomePage {
     @FindBy(css = "a[href='/login']")
     private WebElement signupLoginElement;
 
+    @FindBy(xpath = "//*[contains(text(),'Logged in as')]")
+    private WebElement loggedInConfirmation;
+
+    @FindBy(xpath = "//*[contains(text(),'Delete')]")
+    private WebElement deleteAccount;
+
     public HomePage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
@@ -24,5 +30,13 @@ public class HomePage {
 
     public void signupLoginClick() {
         ElementWrapper.wrap(signupLoginElement).click("SignUp/Login Button");
+    }
+
+    public boolean isLoggedin(){
+        return ElementWrapper.wrap(loggedInConfirmation).isDisplayed("Is logged in");
+    }
+
+    public void deleteAccountClick() {
+        ElementWrapper.wrap(deleteAccount).click("deleteAccount");
     }
 }

@@ -41,6 +41,15 @@ public class SignUpPage {
     @FindBy(xpath = "//button[@data-qa='create-account']")
     private WebElement createAccount;
 
+    @FindBy(xpath = "//*[@data-qa='account-created']/b")
+    private WebElement accountCreationConfirmation;
+
+    @FindBy(xpath = "//*[@data-qa='continue-button']")
+    private WebElement continueLocator;
+
+    @FindBy(xpath = "//*[@data-qa='account-deleted']/b")
+    private WebElement accountDeletedConfirmation;
+
     public SignUpPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
@@ -87,5 +96,16 @@ public class SignUpPage {
 
     public void clickCreateAccount() {
         ElementWrapper.wrap(createAccount).click("Create Account");
+    }
+
+    public boolean accountCreationConfirmationIsDisplayed(){
+        return ElementWrapper.wrap(accountCreationConfirmation).isDisplayed("Account Creation Confirmation");
+    }
+
+    public void clickContinue(){
+        ElementWrapper.wrap(continueLocator).click("Continue");
+    }
+    public boolean accountDeletedConfirmationIsDisplayed(){
+        return ElementWrapper.wrap(accountDeletedConfirmation).isDisplayed("Account Deleted Confirmation");
     }
 }
