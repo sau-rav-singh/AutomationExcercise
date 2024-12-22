@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utilities.ElementWrapper;
 
+@Page
 public class LoginSignupPage {
 
     @FindBy(css = "div[class='signup-form'] h2")

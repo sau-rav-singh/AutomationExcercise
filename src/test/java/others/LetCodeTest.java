@@ -1,5 +1,6 @@
 package others;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
@@ -273,7 +275,16 @@ public class LetCodeTest extends JavaScriptExecutorTest {
     public void formsTest() {
         sectionElement("Forms").click();
         elementById("Date").sendKeys("27041993");
+    }
 
+    @Test
+    public void ScreenshotTest() throws IOException {
+        File fullPageSS = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(fullPageSS, new File("fullpage.png"));
+        sectionElement("Input").click();
+        WebElement ele=driver.findElement(By.id("fullName"));
+        File eleSS=ele.getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(eleSS,new File("eleSS.png"));
 
     }
 }

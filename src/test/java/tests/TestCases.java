@@ -20,9 +20,9 @@ public class TestCases extends TestBase {
     Faker faker = GenericUtilities.getFakerObject();
 
     public void initializePages() {
-        signUpPage = pageObjectManager.getSignUpPage();
-        homePage = pageObjectManager.getHomePage();
-        loginSignupPage = pageObjectManager.getloginSignupPage();
+        signUpPage = pageObjectManager.getPage(SignUpPage.class);
+        homePage = pageObjectManager.getPage(HomePage.class);
+        loginSignupPage = pageObjectManager.getPage(LoginSignupPage.class);
     }
 
     @BeforeTest

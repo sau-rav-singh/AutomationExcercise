@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import utilities.ElementWrapper;
 
+@Page
 public class HomePage {
 
     @FindBy(css = ".product-image-wrapper")

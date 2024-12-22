@@ -2,25 +2,28 @@ package pages;
 
 import org.openqa.selenium.WebDriver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PageObjectManager {
     private final WebDriver driver;
-    private HomePage homePage;
-    private LoginSignupPage loginSignupPage;
-    private SignUpPage signUpPage;
+    private final Map<Class<?>, Object> pageCache = new HashMap<>();
 
     public PageObjectManager(WebDriver driver) {
         this.driver = driver;
     }
 
-    public HomePage getHomePage() {
-        return homePage == null ? homePage = new HomePage(driver) : homePage;
+    @SuppressWarnings("unchecked")
+    public <T> T getPage(Class<T> pageClass) {
+        return (T) pageCache.computeIfAbsent(pageClass, clazz -> {
+            if (!clazz.isAnnotationPresent(Page.class)) {
+                throw new IllegalArgumentException("Class " + clazz.getName() + " is not annotated with @Page");
+            }
+            try {
+                return clazz.getDeclaredConstructor(WebDriver.class).newInstance(driver);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create instance of " + clazz.getName(), e);
+            }
+        });
     }
-    public LoginSignupPage getloginSignupPage() {
-        return loginSignupPage == null ? loginSignupPage = new LoginSignupPage(driver) : loginSignupPage;
-    }
-
-    public SignUpPage getSignUpPage() {
-        return signUpPage == null ? signUpPage = new SignUpPage(driver) : signUpPage;
-    }
-
 }
