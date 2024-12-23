@@ -1,9 +1,8 @@
 package utilities;
 
+import listeners.DriverListner;
 import org.testng.Assert;
 import reporting.ExtentReportManager;
-
-import static listeners.ExtentReportConfigListener.getExtentTest;
 import static utilities.DriverManager.getDriver;
 
 public class CustomAssertions {
@@ -14,18 +13,7 @@ public class CustomAssertions {
             ExtentReportManager.logPassDetails("Assertion Passed: " + message);
         } catch (AssertionError e) {
             ExtentReportManager.logFailureDetails("Assertion Failed: " + message);
-            ExtentActions.embedScreenshot(getDriver());
-            throw e;
-        }
-    }
-
-    public static void assertEquals(Object actual, Object expected, String message) {
-        try {
-            Assert.assertEquals(actual, expected, message);
-            ExtentReportManager.logPassDetails("Assertion Passed: " + message);
-        } catch (AssertionError e) {
-            ExtentReportManager.logFailureDetails("Assertion Failed: " + message +
-                    ". Expected: " + expected + ", but got: " + actual);
+            DriverListner.embedScreenshot(getDriver());
             throw e;
         }
     }

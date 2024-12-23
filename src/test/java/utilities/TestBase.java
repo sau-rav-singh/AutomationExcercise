@@ -1,9 +1,12 @@
 package utilities;
 
+import listeners.DriverListner;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
+import org.openqa.selenium.support.events.WebDriverListener;
 import org.testng.annotations.*;
 import pages.PageObjectManager;
 import reporting.ExtentReportManager;
@@ -18,6 +21,9 @@ public class TestBase {
     public void setup() {
         DriverManager.setDriver(initializeDriver());
         WebDriver driver = DriverManager.getDriver();
+        WebDriverListener myListner = new DriverListner(driver);
+        driver=new EventFiringDecorator<>(myListner).decorate(driver);
+
         driver.manage().window().maximize();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));

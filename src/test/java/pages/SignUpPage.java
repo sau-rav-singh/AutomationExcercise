@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utilities.ElementWrapper;
+
 @Page
 public class SignUpPage {
 
@@ -59,53 +59,53 @@ public class SignUpPage {
     }
 
     public void selectMr() {
-        ElementWrapper.wrap(mrRadioButtonLocator).click("mrRadioButtonLocator");
+       (mrRadioButtonLocator).click();
     }
 
     public void enterPassword(String password) {
-        ElementWrapper.wrap(passwordLocator).sendKeys(password,"Password Field");
+       (passwordLocator).sendKeys(password);
     }
 
     public void enterFirstName(String firstName) {
-        ElementWrapper.wrap(firstNameLocator).sendKeys(firstName, "First Name Field");
+        (firstNameLocator).sendKeys(firstName);
     }
 
     public void enterLastName(String lastName) {
-        ElementWrapper.wrap(lastNameLocator).sendKeys(lastName, "Last Name Field");
+        (lastNameLocator).sendKeys(lastName);
     }
 
     public void enterAddress(String address) {
-        ElementWrapper.wrap(addressLocator).sendKeys(address, "Address Field");
+        (addressLocator).sendKeys(address);
     }
 
     public void enterState(String state) {
-        ElementWrapper.wrap(stateLocator).sendKeys(state, "State Field");
+        (stateLocator).sendKeys(state);
     }
 
     public void enterCity(String city) {
-        ElementWrapper.wrap(cityLocator).sendKeys(city, "City Field");
+        (cityLocator).sendKeys(city);
     }
 
     public void enterZipcode(String zipcode) {
-        ElementWrapper.wrap(zipcodeLocator).sendKeys(zipcode, "Zipcode Field");
+        (zipcodeLocator).sendKeys(zipcode);
     }
 
     public void enterMobileNumber(String mobileNumber) {
-        ElementWrapper.wrap(mobile_numberLocator).sendKeys(mobileNumber, "Mobile Number Field");
+        (mobile_numberLocator).sendKeys(mobileNumber);
     }
 
     public void clickCreateAccount() {
-        ElementWrapper.wrap(createAccount).click("Create Account");
+        (createAccount).click();
     }
 
     public boolean accountCreationConfirmationIsDisplayed(){
-        return ElementWrapper.wrap(accountCreationConfirmation).isDisplayed("Account Creation Confirmation");
+        return accountCreationConfirmation.isDisplayed();
     }
 
     public void clickContinue(){
-        ElementWrapper.wrap(continueLocator).click("Continue");
+        (continueLocator).click();
     }
     public boolean accountDeletedConfirmationIsDisplayed(){
-        return ElementWrapper.wrap(accountDeletedConfirmation).isDisplayed("Account Deleted Confirmation");
+        return accountDeletedConfirmation.isDisplayed();
     }
 }

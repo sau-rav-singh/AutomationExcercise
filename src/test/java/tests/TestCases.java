@@ -11,7 +11,7 @@ import utilities.CustomAssertions;
 import utilities.GenericUtilities;
 import utilities.TestBase;
 
-@Listeners(listeners.ExtentReportConfigListener.class)
+@Listeners({listeners.ExtentReportConfigListener.class})
 public class TestCases extends TestBase {
 
     protected SignUpPage signUpPage;
