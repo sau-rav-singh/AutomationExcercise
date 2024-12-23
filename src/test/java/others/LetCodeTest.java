@@ -282,9 +282,9 @@ public class LetCodeTest extends JavaScriptExecutorTest {
         File fullPageSS = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(fullPageSS, new File("fullpage.png"));
         sectionElement("Input").click();
-        WebElement ele=driver.findElement(By.id("fullName"));
-        File eleSS=ele.getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(eleSS,new File("eleSS.png"));
+        WebElement ele = driver.findElement(By.id("fullName"));
+        File eleSS = ele.getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(eleSS, new File("eleSS.png"));
 
     }
 }

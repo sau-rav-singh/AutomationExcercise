@@ -4,13 +4,17 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 
@@ -27,8 +31,8 @@ public class JavaScriptExecutorTest {
         }
     }
 
-    @BeforeTest
-    public void setup() {
+    @BeforeMethod
+    public void setup() throws URISyntaxException, MalformedURLException {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
@@ -73,8 +77,11 @@ public class JavaScriptExecutorTest {
     public List<WebElement> elementsByxpath(String xpath){
         return  driver.findElements(By.xpath(xpath));
     }
-    @AfterTest
+
+    @AfterMethod
     public void tearDown() {
-       driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
