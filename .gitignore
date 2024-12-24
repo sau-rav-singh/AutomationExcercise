@@ -48,3 +48,4 @@ build/
 /.idea/inspectionProfiles/Project_Default.xml
 /src/test/resources/ss.png
 /reports/
+/logs/automation.log
